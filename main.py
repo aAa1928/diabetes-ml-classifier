@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from sklearn.model_selection import train_test_split
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -18,3 +19,20 @@ class Model(nn.Module):
         x = self.out(x)
 
         return x
+
+
+torch.manual_seed(392)
+
+model = Model()
+
+dataframe = pd.read_csv('diabetes.csv')
+
+X = dataframe.drop('Outcome', axis=1).values
+y = dataframe['Outcome'].values
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=392)
+
+X_train = torch.FloatTensor(X_train)
+X_test = torch.FloatTensor(X_test)
+y_train = torch.LongTensor(y_train)
+y_test = torch.LongTensor(y_test)
