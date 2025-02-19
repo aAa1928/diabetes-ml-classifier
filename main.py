@@ -20,6 +20,12 @@ class Model(nn.Module):
 
         return x
 
+def graph(epochs: int, losses: list[float]) -> None:
+    plt.plot(range(epochs), losses)
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.savefig('loss_plot.png')
+    plt.show()
 
 torch.manual_seed(392)
 
@@ -36,3 +42,28 @@ X_train = torch.FloatTensor(X_train)
 X_test = torch.FloatTensor(X_test)
 y_train = torch.LongTensor(y_train)
 y_test = torch.LongTensor(y_test)
+
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.01)
+
+epochs = 500
+losses = []
+print('Training...')
+for i in range(1, epochs + 1):
+    y_pred = model.forward(X_train)
+
+    loss = criterion(y_pred, y_train)
+    losses.append(loss)
+
+    if i % 10 == 0:
+        print(f'Epoch: {i} Loss: {loss.item()}')
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+print('Training finished!\n')
+
+graph(epochs, losses)
+
+# print('Testing...')
