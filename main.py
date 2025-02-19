@@ -66,4 +66,17 @@ print('Training finished!\n')
 
 graph(epochs, losses)
 
-# print('Testing...')
+print(f'Testing...')
+correct = 0
+with torch.no_grad():
+    for i, y in enumerate(X_test):
+        y_val = model.forward(y)
+
+        print(f'{i+1}.) {str(y_val)} \t {y_test[i]} \t {y_val.argmax().item()}')
+
+        if y_val.argmax().item() == y_test[i]:
+            correct += 1
+
+print(f'{correct}/30 correct!')
+
+torch.save(model.state_dict(), 'iris_model.pth')
