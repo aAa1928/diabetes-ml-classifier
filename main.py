@@ -7,7 +7,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 class Model(nn.Module):
-    def __init__(self, in_features=8, h1=12, h2=14, out_features=2):
+    def __init__(self, in_features=8, h1=16, h2=16, out_features=2):
         super().__init__()
         self.fc1 = nn.Linear(in_features, h1)
         self.fc2 = nn.Linear(h1, h2)
@@ -44,9 +44,9 @@ y_train = torch.LongTensor(y_train)
 y_test = torch.LongTensor(y_test)
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=0.005)
 
-epochs = 500
+epochs = 1000
 losses = []
 print('Training...')
 for i in range(1, epochs + 1):
