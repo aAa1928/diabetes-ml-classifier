@@ -21,7 +21,7 @@ class Model(nn.Module):
         return x
 
 def graph(epochs: int, losses: list[float]) -> None:
-    plt.plot(range(epochs), losses)
+    plt.plot(range(epochs), [loss.detach().numpy() for loss in losses])
     plt.xlabel('Epoch')
     plt.ylabel('Loss')
     plt.savefig('loss_plot.png')
@@ -53,10 +53,10 @@ for i in range(1, epochs + 1):
     y_pred = model.forward(X_train)
 
     loss = criterion(y_pred, y_train)
-    losses.append(loss)
+    losses.append(loss.detach().numpy())
 
     if i % 10 == 0:
-        print(f'Epoch: {i} Loss: {loss.item()}')
+        print(f'Epoch: {i} Loss: {loss}')
 
     optimizer.zero_grad()
     loss.backward()
@@ -79,4 +79,4 @@ with torch.no_grad():
 
 print(f'{correct}/30 correct!')
 
-torch.save(model.state_dict(), 'iris_model.pth')
+torch.save(model.state_dict(), 'diabetes_model.pth')
