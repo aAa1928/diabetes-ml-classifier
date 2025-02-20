@@ -43,7 +43,7 @@ The dataset includes diagnostic measurements such as:
 
 ## Results
 
-The model achieves approximately 78% accuracy on the test set.
+The model achieves approximately 72.73% accuracy on the test set.
 
 ## License
 
