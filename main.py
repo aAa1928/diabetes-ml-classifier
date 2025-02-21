@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 import torch
 import torch.nn as nn
@@ -67,16 +68,15 @@ print('Training finished!\n')
 graph(epochs, losses)
 
 print(f'Testing...')
-correct = 0
 with torch.no_grad():
     for i, y in enumerate(X_test):
         y_val = model.forward(y)
 
         print(f'{i+1}.) {str(y_val)} \t {y_test[i]} \t {y_val.argmax().item()}')
 
-        if y_val.argmax().item() == y_test[i]:
-            correct += 1
-
-print(f'{correct}/154 correct! ({(correct/154)*100:.2f}%)')
+with torch.no_grad():
+    predictions = model(X_test).argmax(dim=1)
+correct = (predictions == y_test).sum().item()
+print(f'{correct}/{len(y_test)} correct! ({accuracy_score(y_test, predictions) * 100:.2f}%)')
 
 torch.save(model.state_dict(), 'diabetes_classifier_model.pth')
